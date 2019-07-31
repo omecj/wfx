@@ -34,21 +34,21 @@ public class GoodsController {
     @PostMapping("up")
     @ResponseBody
     public Result<?> toUp(@RequestParam(value = "id",required = true) Long id){
-
+        goodsService.up(id);
         return Result.success();
     }
 
-    @PostMapping("up")
+    @PostMapping("down")
     @ResponseBody
     public Result<?> toDown(@RequestParam(value = "id",required = true) Long id){
-
+        goodsService.down(id);
         return Result.success();
     }
 
-    @PostMapping("up")
+    @PostMapping("del")
     @ResponseBody
     public Result<?> toDel(@RequestParam(value = "id",required = true) Long id){
-
+        goodsService.del(id);
         return Result.success();
     }
 }
