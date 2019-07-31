@@ -87,8 +87,8 @@
                                                     <span style="color:red" th:if="${g.state==2}">已下架</span>
                                                 </td>
                                                 <td align="center">
-                                                    <a href='javascript:void(0);' class='zPushBtn' onClick="up(this)"
-                                                       th:data="${g.id}">
+                                                    <a href='javascript:void(0);' class='zPushBtn'
+                                                       onClick="up(this)" th:data="${g.id}">
                                                         <img th:src="@{/img/icon003a2.gif}"/><b>上架&nbsp;</b>
                                                     </a>
                                                     <a href='javascript:void(0);' class='zPushBtn'
@@ -129,8 +129,18 @@
 <script th:src="@{/js/table.js}"></script>
 
 <script type="text/javascript">
-
-
+function up(res) {
+    var id = $(res).attr("data");
+    post("goods/up",id,function () {reload()})
+}
+function down(res) {
+    var id = $(res).attr("data");
+    post("goods/down",id,function () {reload()})
+}
+function del(res) {
+    var id = $(res).attr("data");
+    post("goods/del",id,function () {reload()})
+}
 
 </script>
 </body>
