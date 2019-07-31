@@ -22,10 +22,12 @@ public class AdminRoleServiceImpl extends ServiceImpl<AdminRoleMapper, AdminRole
 
     @Transactional
     public void saveRole(AdminRole adminRole, String moduleChecked) {
+        if (adminRole.getId()!=0) {
+            QueryWrapper<AdminModuleRole> wrapper = new QueryWrapper<>();
+            wrapper.lambda().eq(AdminModuleRole::getAdminRoleId, adminRole.getId());
+            adminModuleRoleService.remove(wrapper);
+        }
         this.saveOrUpdate(adminRole);
-        QueryWrapper<AdminModuleRole> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(AdminModuleRole::getAdminRoleId, adminRole.getId());
-        adminModuleRoleService.remove(wrapper);
         String[] split = moduleChecked.split("\\|");
         int len = split.length;
         List<AdminModuleRole> insert = new ArrayList<>(len);    //优化：提前给定长度，避免list自动扩容
