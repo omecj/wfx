@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>测试</title>
+</head>
+<body>
+<input type="file" id="file" name="file" onchange="upload()"><br><br>
+<div>
+<img class="imgs" style="width: 100px">
+</div>
+
+
+<script type="text/javascript" th:src="@{js/jquery.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    var base = /*[[@{/}]]*/ ''; //获取context-path
+    var url = "";
+    /*]]>*/
+</script>
+<script type="text/javascript">
+    function upload() {
+        var file = document.getElementById("file").files[0];
+        var fd = new FormData();
+        fd.append("file",file);
+        $.ajax({
+            url:base + 'upload',
+            type:'post',
+            async:true,
+            data:fd,
+            processData:false,
+            contentType:false,
+            success:function (resp) {
+                $(".imgs").attr("src",resp);
+            }
+        })
+    }
+</script>
+
+</body>
+</html>

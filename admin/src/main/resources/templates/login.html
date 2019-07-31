@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>微分销登录</title>
+    <style>
+        .sp{
+            width: 70px;
+            display: table;
+            /*text-align: center;*/
+        }
+        input{
+        }
+    </style>
+</head>
+<body>
+    <a th:href="@{toIndex}"><h3>click me !</h3></a>
+    <a th:href="@{toUpload}"><h3>upload</h3></a>
+
+    <form th:action="@{/login.do}" method="post">
+        <span class="sp">用户名:</span>
+        <input type="text" id="username" name="username"><br>
+        <span class="sp">密码:</span>
+        <input type="password" id="password" name="password"><br>
+        <input type="submit" value="登录" id="btn">
+    </form>
+    <div th:text="${error}"></div>
+
+
+</body>
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    var base = /*[[@{/}]]*/ '';
+    /*]]>*/
+</script>
+<script type="text/javascript" th:src="@{js/jquery.js}"></script>
+<script type="text/javascript">
+    //页面加载函数
+    /*$(function () {
+        $("#btn").click(function () {
+            var username = $("#username").val();
+            var password = $("#password").val();
+            //AjaxPost请求
+            $.post(
+                base + "login.do",
+                {"username": username, "password": password},
+                function (data) {
+                    alert(data);
+                    console.log(data);
+                    alert(data.message);
+                }
+            );
+        })
+    })*/
+</script>
+</html>

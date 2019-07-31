@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qf.mapper.AdminViewObjectMapper">
+
+    <resultMap id="jqueryTreeView" type="com.qf.entity.vo.JqueryTreeView">
+        <result column="parent_id" property="fid"></result>
+        <result column="parent_name" property="text"></result>
+        <result column="parent_url" property="href"></result>
+        <collection property="nodes" ofType="com.qf.entity.vo.JqueryTreeView">
+            <result column="id" property="fid"></result>
+            <result column="name" property="text"></result>
+            <result column="url" property="href"></result>
+        </collection>
+    </resultMap>
+    <select id="getModuleByAdminId" resultMap="jqueryTreeView">
+        SELECT
+        pam.id parent_id,
+        pam.name parent_name,
+        pam.url parent_url,
+        am.id,
+        am.name,
+        am.url
+        FROM admin a
+        LEFT OUTER JOIN admin_role ar ON a.role_id = ar.id
+        LEFT OUTER JOIN admin_module_role amr ON ar.id = amr.admin_role_id
+        LEFT OUTER JOIN admin_module am ON amr.admin_module_id = am.id
+        LEFT OUTER JOIN admin_module pam ON pam.id = am.parent_id
+        WHERE a.id = #{adminId}
+        AND am.parent_id != 0
+        ORDER BY am.id ASC
+    </select>
+</mapper>
