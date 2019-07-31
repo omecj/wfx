@@ -35,7 +35,7 @@ public class AdminRoleServiceImpl extends ServiceImpl<AdminRoleMapper, AdminRole
             if (!"|".equals(split[i])&&!"".equals(split[i])) {
                 AdminModuleRole adminModuleRole = new AdminModuleRole();
                 adminModuleRole.setAdminModuleId(Long.parseLong(split[i]));
-                adminModuleRole.setAdminRoleId(adminRole.getId());
+                adminModuleRole.setAdminRoleId(adminRole.getId());  //通过回写得到id的值
                 insert.add(adminModuleRole);
             }
         }
