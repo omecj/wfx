@@ -22,7 +22,7 @@ public class AdminRoleServiceImpl extends ServiceImpl<AdminRoleMapper, AdminRole
 
     @Transactional
     public void saveRole(AdminRole adminRole, String moduleChecked) {
-        if (adminRole.getId()!=0) {
+        if (adminRole.getId() != null) {
             QueryWrapper<AdminModuleRole> wrapper = new QueryWrapper<>();
             wrapper.lambda().eq(AdminModuleRole::getAdminRoleId, adminRole.getId());
             adminModuleRoleService.remove(wrapper);
