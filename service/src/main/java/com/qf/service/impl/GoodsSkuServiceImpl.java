@@ -18,4 +18,10 @@ public class GoodsSkuServiceImpl extends ServiceImpl<GoodsSkuMapper, GoodsSku> {
         wrapper.lambda().eq(GoodsSku::getGoodId,id);
         return this.list(wrapper);
     }
+
+    public void removeByGoodsId(Long id) {
+        QueryWrapper<GoodsSku> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(GoodsSku::getGoodId,id);
+        this.remove(queryWrapper);   //移除goods对应的sku记录
+    }
 }

@@ -52,6 +52,12 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> {
 
     @Transactional
     public void saveGoods(Goods goods, LoginMerchant loginMerchant) {
+        //1.删除goods_sku
+        if (goods.getId() != null){
+            goodsSkuService.removeByGoodsId(goods.getId());
+        }
+
+        //2.保存goods
         Long orderNum = 1L;
         List<Goods> byMerchantId = this.getByMerchantId(loginMerchant.getId());
         if (byMerchantId.size()>0){
@@ -60,16 +66,15 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> {
         goods.setOrderNum(orderNum);
         goods.setMerchantUserId(loginMerchant.getId());
         this.saveOrUpdate(goods);   //保存goods对象
-        QueryWrapper<GoodsSku> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(GoodsSku::getGoodId,goods.getId());
-        goodsSkuService.remove(queryWrapper);   //移除goods对应的sku记录
+
+        //3.插入goods_sku
         String[] titles = goods.getSkuTitle().split("\\|");
         String[] costs = goods.getSkuCost().split("\\|");
         String[] prices = goods.getSkuPrice().split("\\|");
         String[] pmoney = goods.getSkuPmoney().split("\\|");
         int len = titles.length;
         int k = 1;
-        List<GoodsSku> list = new ArrayList<>(len/2+1);
+        List<GoodsSku> list = new ArrayList<>(len);
         for (int i = 0; i < len; i++) {
             if (titles[i].equals("")&&costs[i].equals("")&&prices[i].equals("")&&pmoney[i].equals("")){
                 continue;
