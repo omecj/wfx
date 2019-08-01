@@ -9,6 +9,8 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.lang.reflect.Field;
+
 /**
  * @Author-izumi
  */
@@ -48,6 +50,9 @@ public class CustomRealm extends AuthorizingRealm {
         if (!pass.equals(merchantUser.getPassword())){
             throw new RuntimeException("password is wrong!");
         }
+        //字段名相同可以使用反射！！！
+        Field[] fields = merchantUser.getClass().getDeclaredFields();
+        
         LoginMerchant loginMerchant = new LoginMerchant();
         loginMerchant.setId(merchantUser.getId());
         loginMerchant.setUserName(merchantUser.getUserName());

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>微分销管理平台</title>
+    <title>微分销商户管理</title>
     <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
     <link th:href="@{/css/zTreeStyle.css}" rel="stylesheet">
     <link th:href="@{/css/public.css}" rel="stylesheet">
@@ -16,23 +16,8 @@
     <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
         <tbody>
         <tr>
-            <td width="100" id="frmLefts2" valign="top" align="top" style="border-right: solid 1px #D6E3F3;">
-                <!--商品类型-->
-                <ul id="treeDemo" class="ztree">
-                    <li>
-                        <a href="javascript:void(0)" onclick="getGoods(this)" data="">全部</a>
-                    </li>
-                    <li th:each="goodsType : ${goodsTypes}">
-                        <a href="javascript:void(0)" onclick="getGoods(this)" th:data="${goodsType.id}"
-                           th:text="${goodsType.name}"></a>
-                    </li>
-                </ul>
-            </td>
-            <td width="6" id="codeTitle" style="width:6px;" valign="middle" bgcolor="#F4F8EE">
-            </td>
             <td>
-                <table width="100%" border="0" cellspacing="6" cellpadding="0"
-                       style="border-collapse: separate; border-spacing: 6px;">
+                <table width="100%" border="0" cellspacing="6" cellpadding="0" style="border-collapse: separate; border-spacing: 6px;">
                     <tr valign="top">
                         <td>
                             <table width="100%" border="0" cellspacing="0" cellpadding="6" class="blockTable">
@@ -44,17 +29,20 @@
                                 </tr>
                                 <tr>
                                     <td style="padding: 0 8px 4px;">
+                                        <a href='javascript:void(0);' class='zPushBtn' tabindex='-1' onClick="add()">
+                                            <img th:src="@{/img/icon003a2.gif}"/><b>新增&nbsp;</b>
+                                        </a>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="padding-top: 0px; padding-left: 6px; padding-right: 6px; padding-bottom: 8px;">
+                                    <td style="padding-top: 4px; padding-left: 6px; padding-right: 6px; padding-bottom: 4px;">
                                         <table width="100%" cellpadding="2" cellspacing="1"
                                                class="dataTable" sortstring="" id="dg1" page="true" size="0"
                                                multiselect="true" autofill="true" scroll="false" lazy="false"
                                                cachesize="0">
                                             <tr ztype="head" class="dataTableHead">
                                                 <td width="5%" align="center">
-                                                    序 号
+                                                    <b>序 号</b>
                                                 </td>
                                                 <td align="center" width="15%">
                                                     <b>商品名称</b>
@@ -83,13 +71,9 @@
                                                     <span style="color:red" th:if="${g.state==2}">已下架</span>
                                                 </td>
                                                 <td align="center">
-                                                    <a href='javascript:void(0);' class='zPushBtn' onClick="up(this)"
-                                                       th:data="${g.id}">
-                                                        <img th:src="@{/img/up.gif}"/><b>上架&nbsp;</b>
-                                                    </a>
                                                     <a href='javascript:void(0);' class='zPushBtn'
-                                                       onClick="down(this)" th:data="${g.id}">
-                                                        <img th:src="@{/img/down.gif}"/><b>下架&nbsp;</b>
+                                                       onClick="edit(this)" th:data="${g.id}">
+                                                        <img th:src="@{/img/icon003a4.gif}"><b>修改&nbsp;</b>
                                                     </a>
                                                     <a href='javascript:void(0);' class='zPushBtn'
                                                        onClick="del(this)" th:data="${g.id}">
@@ -125,8 +109,16 @@
 <script th:src="@{/js/table.js}"></script>
 
 <script type="text/javascript">
-
-
+function add() {
+    reload(base+"goods/add");
+}
+function edit(res) {
+    var id = $(res).attr("data");
+    reload(base+"goods/edit?id="+id);
+}
+function del(res) {
+    post("goods/del",{"id":$(res).attr("data")},function () {reload()})
+}
 
 </script>
 </body>

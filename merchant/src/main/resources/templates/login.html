@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>微分销登录</title>
+    <title>微分销商户系统</title>
     <style>
         .sp{
             width: 70px;
@@ -14,11 +14,7 @@
     </style>
 </head>
 <body>
-    <div>
-        <h2>hello!</h2>
-    </div>
     <a th:href="@{toIndex}"><h3>click me !</h3></a>
-    <a th:href="@{toUpload}">upload</a>
 
     <form th:action="@{/login.do}" method="post">
         <span class="sp">用户名:</span>

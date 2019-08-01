@@ -28,20 +28,21 @@ public class LoginController {
 
     @RequestMapping("login.do")
     public String doLogin(Model model,
-                          @RequestParam(value = "username", required = false,defaultValue = "") String username,
-                          @RequestParam(value = "password", required = false,defaultValue = "") String password) {
+                          @RequestParam(value = "username", required = false, defaultValue = "") String username,
+                          @RequestParam(value = "password", required = false, defaultValue = "") String password) {
         //String类型默认值为"",Integer类型默认为null
-        if (username.equals("")){
+        //if (username.equals("")||username == null){
+        if (username.equals("")) {
             return "forward:/";
         }
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(token);
-            if (subject.isAuthenticated()){
-                return "forward:/toIndex";
+            if (subject.isAuthenticated()) {
+                return "redirect:/toIndex";
             }
-        }catch (AuthenticationException exception){
+        } catch (AuthenticationException exception) {
             exception.printStackTrace();
         }
         model.addAttribute("data", Result.error("账号或密码错误！"));

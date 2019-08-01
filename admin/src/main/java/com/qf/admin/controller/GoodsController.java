@@ -1,6 +1,8 @@
 package com.qf.admin.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.qf.common.http.Result;
+import com.qf.entity.dto.Goods;
 import com.qf.service.impl.GoodsServiceImpl;
 import com.qf.service.impl.GoodsTypeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +27,14 @@ public class GoodsController {
 
 
     @RequestMapping("list")
-    public String toGoods(Model model){
+    public String toGoods(Model model,@RequestParam(value = "id",required = false)Long id){
+        QueryWrapper<Goods> wrapper = new QueryWrapper<>();
+        if (id != null){
+            wrapper.lambda().eq(Goods::getGoodsTypeId, id);
+        }
+        wrapper.lambda().orderByAsc(Goods::getCreateTime);
         model.addAttribute("goodsTypes", goodsTypeService.list());
-        model.addAttribute("goodsList", goodsService.list());
+        model.addAttribute("goodsList", goodsService.list(wrapper));
         return "goods/list";
     }
 

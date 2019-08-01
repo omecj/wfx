@@ -129,17 +129,22 @@
 <script th:src="@{/js/table.js}"></script>
 
 <script type="text/javascript">
+function getGoods(res) {
+    var id = $(res).attr("data");
+    // post("goods/list",{"id":id},function () {reload()})
+    reload(base + url + "?id=" + id);
+}
 function up(res) {
     var id = $(res).attr("data");
-    post("goods/up",id,function () {reload()})
+    post("goods/up",{"id":id},function () {reload()})
 }
 function down(res) {
     var id = $(res).attr("data");
-    post("goods/down",id,function () {reload()})
+    post("goods/down",{"id":id},function () {reload()})
 }
 function del(res) {
     var id = $(res).attr("data");
-    post("goods/del",id,function () {reload()})
+    post("goods/del",{"id":id},function () {reload()})
 }
 
 </script>

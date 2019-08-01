@@ -120,7 +120,6 @@
                     <h4 class="modal-title" id="myModalLabel">商户管理</h4>
                 </div>
                 <div id="merchantAddDiv" class="modal-body">
-                    <input id="txtId" type="hidden">
                     <label>
                         商户登陆账号
                         <input id="txtUsername" type="text">
@@ -170,18 +169,24 @@
 
 
     function add() {
+        user.id = null;
+        $("#txtName").val("");
+        $("#txtUsername").val("");
+        $("#txtPassword").val("");
+        $("#txtQQ").val("");
+        $("#txtWxh").val("");
+        $("#txtPhone").val("");
         $("#myModal").modal("show");
     }
     function del(para) {
         var id = $(para).attr("data");
         if (confirm("确认删除？")){
             post("merchant/del",{"id":id},function (){reload()});
-
         }
     }
     function edit(para) {
-        alert($("#asf").attr("data"));
-        user.id = $(para).attr("data");
+        // alert($("#asf").attr("data"));       //❌❌❌❌
+        user.id = $(para).attr("data");         //✔✔✔✔✔
         post("merchant/getUserById",{"id":user.id},function (res) {
             var data = res.data;
             $("#txtName").val(data.name);
@@ -190,10 +195,8 @@
             $("#txtQQ").val(data.qq);
             $("#txtWxh").val(data.wxh);
             $("#txtPhone").val(data.phone);
-            $("#txtId").val(data.id);
         })
         $("#myModal").modal("show");
-
     }
 
     function save() {
@@ -207,12 +210,12 @@
         user.wxh = $("#txtWxh").val();
         user.phone = $("#txtPhone").val();
         post("merchant/save",user,function (){reload()});
-
     }
     function search() {
         var key = $("#key").val();
-        post("merchant/search",{"key":key});
+        // post("merchant/search",{"key":key});
         // reload()
+        reload(base + "merchant/user?key=" + key);
     }
 
 </script>
