@@ -37,14 +37,6 @@
                     </td>
                 </tr>
                 <tr>
-                    <td align="right">
-                        <span class="red">*</span><strong>排序号：</strong>
-                    </td>
-                    <td>
-                        <input type="number" id="orderNum" name="orderNum" th:value="${goods?.orderNum}">
-                    </td>
-                </tr>
-                <tr>
                     <td align="right"><span class="red">*</span><strong>商品类型：</strong></td>
                     <td>
                         <select name="type_id" id="type_id" style="width:252px;font-size:14px" class="selectBox">
@@ -69,8 +61,8 @@
                     <td align="right"><span class="red">*</span><strong>上传图片：</strong></td>
                     <td>
                         <input type="file" name="file" id="file" style="width:540px;height:22px;cursor:hand"
-                               class="fileinput" multiple="multiple" onchange="up(this)">
-                        <!--<input type="hidden" id="filePath" th:value="${goods?.pic}"/>-->
+                               multiple="multiple" onchange="up(this)">
+                        <input type="hidden" id="filePath" th:value="${goods?.pic}"/>
                     </td>
                 </tr>
                 <tr>
@@ -94,6 +86,22 @@
                                 </th>
                                 <th align="left" style="background-color:#F9F9F9">(<span style="color:red">*</span>)分成
                                 </th>
+                                <th align="left" style="background-color:#F9F9F9">(<span style="color:red">*</span>)删除
+                                </th>
+                            </tr>
+                            <tr th:each="sku : ${skuList}">
+                                <td>
+                                    <input class="sku" data='title' th:value="${sku.title}"/>
+                                </td>
+                                <td>
+                                    <input class="sku" data='cost' th:value="${sku.cost}"/>
+                                </td>
+                                <td>
+                                    <input class="sku" data='price' th:value="${sku.price}"/>
+                                </td>
+                                <td>
+                                    <input class="sku" data='pmoney' th:value="${sku.pmoney}"/>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -101,10 +109,6 @@
                             <button class="btn btn-sm btn-primary" onclick="insertRows()">
                                 <i class="icon-save"></i>
                                 增加
-                            </button>
-                            <button class="btn btn-sm btn-danger" onclick="delRows()">
-                                <i class="icon-save"></i>
-                                删除
                             </button>
                             (<span style="color:red">提示信息：</span>上述所有输入项均为必填项目，请务必填入相应值后保存！)
                         </div>
@@ -132,56 +136,115 @@
 <script th:src="@{/js/jquery.js}"></script>
 <script th:src="@{/js/bootstrap.js}"></script>
 
-<script type="text/javascript">
-function up(res) {
-    var fd = new FormData();
-    // var file1 = document.getElementById("file").files[0];
-    // var file2 = document.getElementById("file").files[1];
-    // fd.append("file",file1);
-    // fd.append("file",file2);
-    //多文件上传
-    var file = res.files;
-    var len  = file.length;
-    for (i = 0; i < len; i++){
-        fd.append("files",file[i]);
-    }
-    $.ajax({
-        url:'goods/upload',
-        type:'post',
-        data:fd,
-        async:true,
-        processData:false,
-        contentType:false,
-        success:function(result){
-            if (result.result){
-                $("#img1").attr("src",result.data[0]);
-                $("#img2").attr("src",result.data[1]);
-            }
-        }
-    })
-}
-
-function insertRows() {
-    var row = "<tr class=\"trSku\">" +
-        "<td><input class=\"sku\" data='title'/></td>" +
-        "<td><input class=\"sku\" data='cost'/></td>" +
-        "<td><input class=\"sku\" data='price'/></td>" +
-        "<td><input class=\"sku\" data='pmoney'/></td>" +
-        "</tr>";
-    $("#tcbg > tbody > .trSku").append(row);
-}
-function delRows() {
-
-}
-
-function backToGoodsList() {
-    reload(base + "goods/list");
-}
-
-function save() {
-
-}
-</script>
 
 </body>
+<script type="text/javascript">
+    var goods = {
+        id: "null",
+        name: "null",
+        goodsTypeId: "null",
+        pic: "null",
+        promoteDesc: "null",
+        skuTitle: "null",
+        skuCost: "null",
+        skuPrice: "null",
+        skuPmoney: "null"
+    }
+
+    function up(res) {
+        var fd = new FormData();
+        // var file1 = document.getElementById("file").files[0];
+        // var file2 = document.getElementById("file").files[1];
+        // fd.append("file",file1);
+        // fd.append("file",file2);
+        //多文件上传
+        var file = res.files;
+        var len = file.length;
+        for (i = 0; i < len; i++) {
+            fd.append("files", file[i]);
+        }
+        $.ajax({
+            url: 'goods/upload',
+            type: 'post',
+            data: fd,
+            async: true,
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                if (result.result) {
+                    $("#img").attr("src", result.data[0]);
+                    $("#filePath").val(result.data[0]);
+                }
+            }
+        })
+    }
+
+    function insertRows() {
+        var row = "<tr>" +
+            "<td><input class=\"sku\" data='title'/></td>" +
+            "<td><input class=\"sku\" data='cost'/></td>" +
+            "<td><input class=\"sku\" data='price'/></td>" +
+            "<td><input class=\"sku\" data='pmoney'/></td>" +
+            "<td><button class=\"btn btn-sm btn-danger\" onclick=\"delRows(this)\">" +
+            "<i class=\"icon-save\"></i>删除</button></td>" +
+            "</tr>";
+        $("#tcbg > tbody").append(row);
+    }
+
+    function delRows(res) {
+        if ($(res).parent().parent().find("input[data=title]").val().length > 0 |
+            $(res).parent().parent().find("input[data=cost]").val().length > 0 |
+            $(res).parent().parent().find("input[data=price]").val().length > 0 |
+            $(res).parent().parent().find("input[data=pmoney]").val().length > 0) {
+            if (confirm("确认删除？")) {
+                $(res).parent().parent().remove();
+            }
+        } else {
+            $(res).parent().parent().remove();
+        }
+    }
+
+    function backToGoodsList() {
+        reload(base + "goods/list");
+    }
+
+    function save() {
+        if ($("#id").val().toString().length > 0 ){
+            goods.id = $("#id").val();
+        }else {
+            goods.id = undefined;
+        }
+        var titles = $("input[data=title]");
+        var costs = $("input[data=cost]");
+        var prices = $("input[data=price]");
+        var pmoneys = $("input[data=pmoney]");
+        goods.skuTitle = [];
+        goods.skuCost = [];
+        goods.skuPrice = [];
+        goods.skuPmoney = [];
+        $.each(titles,function (i, input) {
+            goods.skuTitle.push($(input).val());
+        })
+        $.each(costs,function (i, input) {
+            goods.skuCost.push($(input).val());
+        })
+        $.each(prices,function (i, input) {
+            goods.skuPrice.push($(input).val());
+        })
+        $.each(pmoneys,function (i, input) {
+            goods.skuPmoney.push($(input).val());
+        })
+        goods.name = $("#goods_name").val();
+        goods.goodsTypeId = $("#type_id").val();
+        goods.pic = $("#filePath").val();
+        goods.promoteDesc = $("#promote_desc").val();
+        goods.skuTitle = goods.skuTitle.join("|");
+        goods.skuCost = goods.skuCost.join("|");
+        goods.skuPrice = goods.skuPrice.join("|");
+        goods.skuPmoney = goods.skuPmoney.join("|");
+        post("goods/save",goods,function () {
+            backToGoodsList();
+        })
+    }
+</script>
 </html>

@@ -1,8 +1,10 @@
 package com.qf.merchant.controller;
 
 import com.qf.common.http.Result;
+import com.qf.entity.dto.Goods;
 import com.qf.entity.po.LoginMerchant;
 import com.qf.service.impl.GoodsServiceImpl;
+import com.qf.service.impl.GoodsSkuServiceImpl;
 import com.qf.service.impl.GoodsTypeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +39,8 @@ public class GoodsController {
     private GoodsTypeServiceImpl goodsTypeService;
     @Autowired
     private GoodsServiceImpl goodsService;
+    @Autowired
+    private GoodsSkuServiceImpl goodsSkuService;
 
     @RequestMapping("list")
     public String toList(Model model, LoginMerchant loginMerchant) {
@@ -56,14 +60,17 @@ public class GoodsController {
     public String toAdd(Model model,@RequestParam(value = "id",required = false) Long id) {
         if (id != null){
             model.addAttribute("goods", goodsService.getById(id));
+            model.addAttribute("skuList", goodsSkuService.getByGoodsId(id));
         }
         model.addAttribute("goodsTypeList", goodsTypeService.list());
         return "goods/add";
     }
 
     @PostMapping("save")
-    public String toSave() {
-        return "forward:goods/list";
+    @ResponseBody
+    public Result<?> toSave(Goods goods,LoginMerchant loginMerchant) {
+        goodsService.saveGoods(goods, loginMerchant);
+        return Result.success();
     }
 
     @PostMapping("upload")
