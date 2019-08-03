@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @Author-izumi
  */
-//Spring-mvc的参数解析器，需要继承自WebArgumentResolver
+//Spring-mvc的参数解析器，需要实现WebArgumentResolver接口
 public class ArgumentResolver implements WebArgumentResolver {
     @Override
     public Object resolveArgument(MethodParameter methodParameter, NativeWebRequest nativeWebRequest) throws Exception {

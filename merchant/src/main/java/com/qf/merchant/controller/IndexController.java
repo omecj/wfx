@@ -26,7 +26,6 @@ public class IndexController {
     public Result<List<JqueryTreeView>> getData(){
         List<JqueryTreeView> list = new ArrayList<>();
         list.add(new JqueryTreeView(1,"商品管理","goods/list"));
-        list.add(new JqueryTreeView(2,"订单管理","order/list"));
         return Result.success(list);
     }
 }

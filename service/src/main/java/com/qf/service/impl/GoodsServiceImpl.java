@@ -9,6 +9,7 @@ import com.qf.entity.dto.GoodsSku;
 import com.qf.entity.po.LoginMerchant;
 import com.qf.mapper.GoodsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +42,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> {
     @Transactional
     public void del(Long id) {
         this.removeById(id);
+        goodsSkuService.removeByGoodsId(id);
     }
 
     @Transactional
@@ -67,29 +69,48 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> {
         goods.setMerchantUserId(loginMerchant.getId());
         this.saveOrUpdate(goods);   //保存goods对象
 
+        JacksonJsonParser jsonParser = new JacksonJsonParser();
+        List<Object> titles = jsonParser.parseList(goods.getSkuTitle());
+        List<Object> costs = jsonParser.parseList(goods.getSkuCost());
+        List<Object> prices = jsonParser.parseList(goods.getSkuPrice());
+        List<Object> pmoney = jsonParser.parseList(goods.getSkuPmoney());
+
+        //String[] titles = goods.getSkuTitle().split("\\|");
+        //String[] costs = goods.getSkuCost().split("\\|");
+        //String[] prices = goods.getSkuPrice().split("\\|");
+        //String[] pmoney = goods.getSkuPmoney().split("\\|");
+
+
         //3.插入goods_sku
-        String[] titles = goods.getSkuTitle().split("\\|");
-        String[] costs = goods.getSkuCost().split("\\|");
-        String[] prices = goods.getSkuPrice().split("\\|");
-        String[] pmoney = goods.getSkuPmoney().split("\\|");
-        int len = titles.length;
+        //String[] titles = goods.getSkuTitle().split("\\|");
+        //String[] costs = goods.getSkuCost().split("\\|");
+        //String[] prices = goods.getSkuPrice().split("\\|");
+        //String[] pmoney = goods.getSkuPmoney().split("\\|");
+        //int len = titles.length;
+        int len = titles.size();
         int k = 1;
         List<GoodsSku> list = new ArrayList<>(len);
         for (int i = 0; i < len; i++) {
-            if (titles[i].equals("")&&costs[i].equals("")&&prices[i].equals("")&&pmoney[i].equals("")){
+            if (titles.get(i).equals("")&& costs.get(i).equals("")&& prices.get(i).equals("")&& pmoney.get(i).equals("")){
                 continue;
             }
-            if (!titles[i].equals("|")){
+            if (!titles.get(i).equals("|")){
                 GoodsSku goodsSku = new GoodsSku();
                 goodsSku.setGoodId(goods.getId());
-                goodsSku.setTitle(titles[i]);
-                goodsSku.setCost(costs[i]);
-                goodsSku.setPrice(prices[i]);
-                goodsSku.setPmoney(pmoney[i]);
+                goodsSku.setTitle((String) titles.get(i));
+                goodsSku.setCost((String) costs.get(i));
+                goodsSku.setPrice((String) prices.get(i));
+                goodsSku.setPmoney((String) pmoney.get(i));
                 goodsSku.setOrderNo((long) k++);
                 list.add(goodsSku);
             }
         }
         goodsSkuService.saveBatch(list);
+    }
+
+    public List<Goods> getByMerchantIdAndStatus(Long id) {
+        QueryWrapper<Goods> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Goods::getMerchantUserId, id).eq(Goods::getState, 1);
+        return this.list(queryWrapper);
     }
 }

@@ -102,6 +102,9 @@
                                 <td>
                                     <input class="sku" data='pmoney' th:value="${sku.pmoney}"/>
                                 </td>
+                                <td>
+                                    <button class="btn btn-sm btn-danger" onclick="delRows(this)"><i class="icon-save">删除</i></button>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -238,13 +241,22 @@
         goods.goodsTypeId = $("#type_id").val();
         goods.pic = $("#filePath").val();
         goods.promoteDesc = $("#promote_desc").val();
-        goods.skuTitle = goods.skuTitle.join("|");
-        goods.skuCost = goods.skuCost.join("|");
-        goods.skuPrice = goods.skuPrice.join("|");
-        goods.skuPmoney = goods.skuPmoney.join("|");
+        // goods.skuTitle = goods.skuTitle.join("|");
+        // goods.skuCost = goods.skuCost.join("|");
+        // goods.skuPrice = goods.skuPrice.join("|");
+        // goods.skuPmoney = goods.skuPmoney.join("|");
+        goods.skuTitle = JSON.stringify(goods.skuTitle);
+        goods.skuCost = JSON.stringify(goods.skuCost);
+        goods.skuPrice = JSON.stringify(goods.skuPrice);
+        goods.skuPmoney = JSON.stringify(goods.skuPmoney);
         post("goods/save",goods,function () {
             backToGoodsList();
         })
     }
+
+
+    // JSON.parse("json内容"); //前端解析json，如果json为空，会报错
+    // JSON.stringify("数组"); //数组转成json格式
+
 </script>
 </html>

@@ -52,10 +52,10 @@ public class GoodsController {
     @PostMapping("del")
     @ResponseBody
     public Result<?> toDel(@RequestParam(value = "id", required = true) Long id) {
-        goodsService.removeById(id);
+        goodsService.del(id);
         return Result.success();
     }
-
+    //@Value("${path.address}")
     @RequestMapping({"add", "edit"})
     public String toAdd(Model model,@RequestParam(value = "id",required = false) Long id) {
         if (id != null){

@@ -18,6 +18,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.qf</groupId>
+            <artifactId>service</artifactId>
+            <version>0.1</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>

@@ -25,7 +25,7 @@ public class LoginController {
                           @RequestParam(value = "username",required = false) String username,
                           @RequestParam(value = "password",required = false) String password){
         //String类型默认值为"",Integer类型默认为null
-        if (username == null){
+        if (username.equals("")){
             return "forward:/";
         }
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);

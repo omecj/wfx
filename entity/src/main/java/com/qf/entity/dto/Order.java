@@ -6,13 +6,14 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.qf.entity.base.BaseDto;
 
 import java.util.Date;
-@TableName("order")
+@TableName("`order`")
 public class Order extends BaseDto {
   @TableField("order_id")
   private String orderId;
+  private Long merchantUserId;
   private String phone;
   private String name;
-  private Long goodId;
+  private Long goodsId;
   private Long num;
   private String province;
   private String city;
@@ -21,6 +22,7 @@ public class Order extends BaseDto {
   private String remark;
   private Long payType;
   private Long skuId;
+  private Integer price;
   private Long payState;
   private Date createTime;
 
@@ -30,6 +32,14 @@ public class Order extends BaseDto {
 
   public void setOrderId(String orderId) {
     this.orderId = orderId;
+  }
+
+  public Long getMerchantUserId() {
+    return merchantUserId;
+  }
+
+  public void setMerchantUserId(Long merchantUserId) {
+    this.merchantUserId = merchantUserId;
   }
 
   public String getPhone() {
@@ -48,12 +58,12 @@ public class Order extends BaseDto {
     this.name = name;
   }
 
-  public Long getGoodId() {
-    return goodId;
+  public Long getGoodsId() {
+    return goodsId;
   }
 
-  public void setGoodId(Long goodId) {
-    this.goodId = goodId;
+  public void setGoodsId(Long goodsId) {
+    this.goodsId = goodsId;
   }
 
   public Long getNum() {
@@ -118,6 +128,14 @@ public class Order extends BaseDto {
 
   public void setSkuId(Long skuId) {
     this.skuId = skuId;
+  }
+
+  public Integer getPrice() {
+    return price;
+  }
+
+  public void setPrice(Integer price) {
+    this.price = price;
   }
 
   public Long getPayState() {
