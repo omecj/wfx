@@ -11,7 +11,7 @@ public class Constants {
     public static final String LOGIN_SUCCESS = "登录成功！";
     public static final String LOGIN_FAILED = "登录失败！";
 
-    public static final List<String> LIST = Arrays.asList("/","/login","/login.do","/css/**","/fonts/**","/img/**","/js/**","/error");
+    public static final List<String> LIST = Arrays.asList("/","/login","/login.do","/css/**","/fonts/**","/img/**","/js/**","/error","/callback/wxpay/notifyCall");
 
     public static final String CURRENT_ADMIN = "CURRENT_ADMIN";
 

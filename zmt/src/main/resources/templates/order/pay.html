@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>微分销自媒体平台</title>
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/qrcode.min.js}"></script>
+</head>
+<body>
+<div>
+    <h5>订单号</h5>
+    <span id="orderId" th:text="${orderDetail.id}"></span><br>
+    <h5>用户名</h5>
+    <span th:text="${orderDetail.name}"></span><br>
+    <h5>价格</h5>
+    <span th:text="${orderDetail.price}"></span><br>
+    <h5>备注</h5>
+    <span th:text="${orderDetail.remark}"></span><br>
+</div>
+
+<div id="QRCode" style="width: 165px;height: 165px;margin-top: 200px"></div>
+
+<script type="text/javascript">
+    var qr = new QRCode(document.getElementById("QRCode"), {
+        width: 165,
+        height: 165
+    });
+
+    $(function () {
+        var id = $("#orderId").text();
+        alert(id);
+        // qr.makeCode(id);
+        post("order/getQR",{"orderId":id},function (resp) {
+            qr.makeCode(resp.data);
+        })
+
+    })
+
+
+</script>
+</body>
+</html>

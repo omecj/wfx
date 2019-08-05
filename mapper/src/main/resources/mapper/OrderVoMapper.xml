@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qf.mapper.OrderVoMapper">
+    <select id="getOrderByMerchantUserId" resultType="com.qf.entity.vo.OrderVo">
+        SELECT o.*,g.name goodsName
+        FROM `order` o INNER JOIN goods g ON o.goods_id = g.id
+        WHERE o.merchant_user_id = #{merchantUserId}
+    </select>
+    <select id="getByOrderId" resultType="com.qf.entity.vo.OrderVo">
+        SELECT o.*,g.name goodsName
+        FROM `order` o INNER JOIN goods g ON o.goods_id = g.id
+        WHERE o.id = #{orderId}
+    </select>
+
+</mapper>
