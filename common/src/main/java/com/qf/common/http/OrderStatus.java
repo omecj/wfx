@@ -6,8 +6,8 @@ package com.qf.common.http;
  */
 public enum OrderStatus {
 
-    PAID(0L,"已支付"),
-    PENDING(1L,"待支付");
+    PAID(1L,"已支付"),
+    PENDING(0L,"待支付");
 
     private Long code;
     private String description;

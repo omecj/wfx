@@ -28,12 +28,20 @@
 
     $(function () {
         var id = $("#orderId").text();
-        alert(id);
         // qr.makeCode(id);
         post("order/getQR",{"orderId":id},function (resp) {
             qr.makeCode(resp.data);
-        })
+        });
 
+        var i = null;
+        i = setInterval(function () {
+            post("order/getPayStatus", {"id": orderId}, function (result) {
+                if (result.data === "paid") {
+                    clearInterval(i);
+                    reload(base + "order/list");
+                }
+            });
+        }, 1000);
     })
 
 

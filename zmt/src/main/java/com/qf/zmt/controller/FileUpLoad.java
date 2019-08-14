@@ -1,5 +1,6 @@
 package com.qf.zmt.controller;
 
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +31,6 @@ public class FileUpLoad {
         int start = file.getOriginalFilename().lastIndexOf(".");
         String filename = UUID.randomUUID().toString()+file.getOriginalFilename().substring(start);
         file.transferTo(new File(String.format("%s%s",address,filename)));
-        System.out.println(filename);
         return "ok";
     }
 }

@@ -12,16 +12,15 @@ public enum ResultCode {
     LOGIN_SUCCESS(3, "登陆成功！", true);
 
 
-    private int code = 0;
-    private String description = null;
-    private Boolean result = null;
+    private int code;
+    private String description;
+    private Boolean result;
 
     ResultCode(int code, String description, Boolean result) {
         this.code = code;
         this.description = description;
         this.result = result;
     }
-
 
     public int getCode() {
         return code;

@@ -42,5 +42,4 @@ public class WebConfig extends WebMvcConfigurationSupport {
                 .excludePathPatterns(Constants.LIST);   //排除拦截项
         super.addInterceptors(registry);
     }
-
 }
