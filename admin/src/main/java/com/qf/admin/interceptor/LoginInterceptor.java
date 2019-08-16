@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @Author-izumi
  */
-//SpringBoot的拦截器，需要集成自HandlerInterceptorAdapter
+//SpringBoot的拦截器，需要继承自HandlerInterceptorAdapter
 public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

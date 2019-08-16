@@ -24,6 +24,16 @@ public class WebConfig extends WebMvcConfigurationSupport {
     protected void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(new ServletWebArgumentResolverAdapter(new ArgumentResolver()));
     }
+
+    //配置Spring-mvc拦截器,注册
+    @Override
+    public void addInterceptors(InterceptorRegistry registry){
+        registry.addInterceptor(new LoginInterceptor())     //权限拦截器
+                .addPathPatterns("/**")                 //拦截所有
+                .excludePathPatterns(Constants.LIST);   //排除拦截项
+        super.addInterceptors(registry);
+    }
+
     //配置SpringBoot的静态资源
     @Override
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -33,13 +43,5 @@ public class WebConfig extends WebMvcConfigurationSupport {
         registry.addResourceHandler("/fonts/**").addResourceLocations("classpath:static/fonts/");
         registry.addResourceHandler("/favicon.ico").addResourceLocations("classpath:static/favicon.ico");
         super.addResourceHandlers(registry);
-    }
-    //配置Spring-mvc拦截器
-    @Override
-    public void addInterceptors(InterceptorRegistry registry){
-        registry.addInterceptor(new LoginInterceptor())     //权限拦截器
-                .addPathPatterns("/**")                 //拦截所有
-                .excludePathPatterns(Constants.LIST);   //排除拦截项
-        super.addInterceptors(registry);
     }
 }
